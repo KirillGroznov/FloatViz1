@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column; /* Устанавливаем направление столбцом */
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5dc; /* Бежевый фон */
+}
+.header {
+    margin-top: 36px;
+    font-size: 69px;
+    font-weight: bold;
+    color: #1d17f1; /* Синий цвет */
+    text-shadow: 2px 2px 4px #000000; /* Черная обводка */
+}
+.orange {
+    color: #ffffff; /* Оранжевый цвет */
+}
+.black {
+    color: #000cff; /* Черный цвет */
+}
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 200px; /* Добавлен верхний отступ */
+    border: 2px solid #007bff; /* Голубая рамка */
+}
+.image-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
+.image-link img {
+    width: auto;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.image-link img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.image-link p {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+.image-link p:hover {
+    transform: scale(1.1);
+    color: #999; /* серый цвет */
+}
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+}
+.button, .icon-button {
+    display: inline-block;
+    padding: 30px 25px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1em;
+    color: white;
+    background-color: #097c00;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+.button:hover, .icon-button:hover {
+    background-color: #b38f00;
+}
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #ff0000;
+}
+.icon-button img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: blue;
+}

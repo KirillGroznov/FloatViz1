@@ -1,0 +1,595 @@
+body {
+    margin: 0;
+    padding: 20px;
+    border: 50px solid black; /* Черная рамка вокруг страницы */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Выравнивание по началу страницы */
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    overflow-y: auto; /* Включаем вертикальную прокрутку при необходимости */
+}
+.floating-point-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px; /* Уменьшенный верхний отступ */
+}
+.input-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.number-input {
+    margin-bottom: 5px;
+    font-size: 21px;
+    padding: 5px;
+}
+.binary-output {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center; /* Выравнивание элементов по центру */
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.bit {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    margin: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 21px;
+    color: #ffffff; /* Изменение цвета текста на красный */
+}
+.sign {
+    background-color: #FFA500; /* Оранжевый цвет */
+}
+.exponent {
+    background-color: #007bff; /* Голубой цвет */
+}
+.mantissa {
+    background-color: #097c00; /* Зеленый цвет */
+}
+.label {
+    text-align: center;
+    margin: 1px 0;
+    font-size: 20px;
+    width: 100%;
+}
+.llabel {
+    text-align: center;
+    margin: 1px 0;
+    margin-bottom: 20px; /* Отступ снизу 10px */
+    font-size: 21px; /* Установка размера шрифта 21 */
+    font-weight: bold; /* Делаем текст жирным */
+    color: #000; /* Цвет текста */
+    font-family: Arial, sans-serif; /* Пример красивого шрифта */
+}
+.sign-label,
+.exponent-label,
+.mantissa-label {
+    font-weight: bold; /* Увеличиваем жирность текста */
+    color: #000000; /* Цвет текста */
+    transition: color 0.3s ease; /* Плавная анимация изменения цвета */
+    position: relative; /* Относительное позиционирование для размещения значка */
+}
+
+.sign-label:hover,
+.exponent-label:hover,
+.mantissa-label:hover {
+    color: #ff7f00; /* Изменяем цвет при наведении */
+    text-decoration: underline; /* Добавляем подчеркивание при наведении */
+    cursor: pointer; /* Изменяем курсор при наведении */
+}
+
+.page-title {
+    position: absolute;
+    top: 10px;
+    left: 13%;
+    transform: translateX(-50%);
+    color: white; /* Белые буквы */
+    font-size: 24px;
+    font-weight: bold;
+}
+.title-text {
+    font-size: 20px; /* Установите желаемый размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    font-family: Arial, sans-serif; /* Установите желаемый шрифт */
+    margin-bottom: 20px; /* Добавление отступа снизу */
+}
+.algorithm-menu {
+    position: fixed;
+    bottom: 50px;
+    left: 70px;
+    display: flex;
+    flex-direction: column;
+}
+.algorithm-menu-button {
+    background-color: #a66bac;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 250px;
+    transition: transform 0.2s, box-shadow 0.2s; /* Плавная анимация для transform и box-shadow */
+}
+.algorithm-menu-button:hover {
+    transform: scale(1.05); /* Увеличиваем размер при наведении */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Добавляем тень при наведении */
+}
+.algorithm-menu-button:active {
+    transform: scale(0.95); /* Уменьшаем размер при нажатии */
+}
+.algorithm-list {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    left: -13px;
+    background-color: #a66bac;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+}
+.algorithm-item {
+    margin-bottom: 15px;
+    cursor: pointer;
+    width: 250px;
+    text-align: center;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s; /* Добавляем плавный переход для изменения цвета фона и трансформации */
+}
+.algorithm-item:hover {
+    background-color: #000000; /* Изменяем цвет фона при наведении */
+    transform: translateY(-5px); /* Двигаем элемент вверх при наведении */
+}
+.step-animation {
+    margin: 18px 0;
+    padding: 21px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #007bff;
+    font-size: 21px;
+}
+.animation-color{
+    margin: 18px 0;
+    padding: 21px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #097c00;
+    font-size: 21px;
+}
+/* Увеличение размера текста для элементов анимации */
+.comparison-animation,
+.zero-animation,
+.bit.sign {
+    font-size: 21px; /* Измените значение на желаемый размер текста */
+}
+
+/* Заголовок */
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Кнопка "Посчитать" */
+#calculate-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#calculate-button:hover {
+    background-color: #0056b3;
+}
+
+/* Результат */
+#result {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    font-size: 18px;
+    background-color: #f8f8f8;
+    cursor: default;
+}
+
+/* Причина NaN */
+#nan-reason {
+    margin-top: 20px;
+    color: #ff0000;
+    font-weight: bold;
+    display: none;
+}
+
+/* Изображение ошибки */
+#nan-reason img {
+    display: block;
+    margin: 20px auto; /* Центрирование изображения */
+    max-width: 1000px; /* Изменение максимальной ширины изображения */
+    height: auto; /* Автоматическое масштабирование высоты */
+    border-radius: 13px; /* Закругление углов */
+}
+
+/* Анимация */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Контейнер формы с анимацией */
+.form-container.animated {
+    animation: fadeIn 0.5s ease forwards;
+}
+/* Стили для меток с вводом чисел */
+.input-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+/* Стили для меток с выбором бесконечностей */
+.select-label {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+}
+/* Стили для надписей рядом с метками */
+.label-caption {
+    font-size: 14px;
+    color: #666;
+    margin-left: 5px;
+}
+/* Стили для приветственной надписи */
+.welcome-text {
+    font-size: 2.1rem;
+    color: #000000;
+    text-align: center;
+    margin-top: 21px;
+    animation: fadeIn 2s ease-in-out;
+    margin-left: -350px;
+}
+
+/* Анимация для появления надписи */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* Стили для контейнера гифки */
+#gif-container {
+    position: absolute;
+    top: 45%;
+    left: 58%;
+    transform: translate(-50%, -50%);
+}
+
+/* Стили для гифки */
+.gif {
+    max-width: 100%;
+    max-height: 100%;
+}
+/* Стили для кнопок дополнительных опций */
+#additional-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#additional-options button {
+    margin: 0 10px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    background-color: #a66bac;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#additional-options button:hover {
+    background-color: #000000;
+}
+#additional-options2 button {
+    margin: 0 10px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    background-color: #a66bac;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#additional-options2 button:hover {
+    background-color: #000000;
+}
+#exponent-vax {
+    cursor: pointer;
+}
+#sign-vax {
+    cursor: pointer;
+}
+#mantissa-vax
+{
+    cursor: pointer;
+}
+#exponent-mf {
+    cursor: pointer;
+}
+#sign-mf {
+    cursor: pointer;
+}
+#mantissa-mf
+{
+    cursor: pointer;
+}
+/* Добавляем анимацию для появления шагов */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Стили для кнопки */
+#convert-vax-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#convert-vax-button:hover {
+    background-color: #0056b3;
+}
+
+/* Стили для результата */
+#vax-number-result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Стили для ввода */
+.input-group {
+    margin-bottom: 10px;
+}
+
+.vax-step {
+    animation: fadeIn 0.5s ease;
+    color: white; /* Белый цвет текста */
+}
+.ieee-step {
+    animation: fadeIn 0.5s ease;
+    color: white; /* Белый цвет текста */
+}
+#convert-ieee-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+/* Стили для результата */
+#ieee-number-result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+.mf-step {
+    animation: fadeIn 0.5s ease;
+    color: white; /* Белый цвет текста */
+}
+#convert-mf-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+/* Стили для результата */
+#mf-number-result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+.input-group1 {
+    text-align: center;
+}
+.number-input1 {
+    margin-bottom: 5px;
+    font-size: 21px;
+    padding: 5px;
+    width: 366px; /* Измените значение на нужную вам ширину */
+}
+#character {
+    position: relative;
+    width: 100px;
+    height: 200px;
+    margin: 0 auto;
+    left: -150px;
+}
+
+.head {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+    background: #dfbe91;
+    border-radius: 50%;
+}
+
+.body {
+    position: absolute;
+    top: 50px;
+    left: 25px;
+    width: 50px;
+    height: 81px;
+    background: #070707;
+}
+
+.eye-left, .eye-right {
+    position: absolute;
+    top: 20%;
+    width: 10px;
+    height: 10px;
+    background: #388be8;
+    border-radius: 50%;
+}
+
+.eye-left {
+    left: 20%;
+}
+
+.eye-right {
+    right: 20%;
+}
+.pupil-left, .pupil-right {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #000;
+    border-radius: 50%;
+}
+
+.pupil-left {
+    top: 30%;
+    left: 27%;
+}
+
+.pupil-right {
+    top: 30%;
+    right: 30%;
+}
+
+.nose {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 6px;
+    height: 6px;
+    background: #837762;
+    border-radius: 50%;
+}
+
+.mouth {
+    position: absolute;
+    top: 70%;
+    left: 36%;
+    width: 15px;
+    height: 5px;
+    background: #e363ec;
+    border-radius: 5px;
+}
+
+.hair {
+    position: absolute;
+    top: -10px;
+    left: -6px;
+    width: 60px; /* Ширина увеличена для отображения челки */
+    height: 20px; /* Высота увеличена для отображения челки */
+    background: #4c3511; /* Цвет волос */
+    border-radius: 0 0 80% 80%; /* Задание круглых краев для челки */
+    transform: rotate(-3deg); /* Поворот челки для натурального вида */
+    transform-origin: left top; /* Определение точки, вокруг которой происходит поворот */
+    z-index: 1; /* Установка z-index для вывода челки поверх остальных элементов */
+}
+
+
+
+.arm-left, .arm-right {
+    position: absolute;
+    top: 60px;
+    width: 20px;
+    height: 70px;
+    background: #dfbe91;
+}
+
+.arm-left {
+    left: 5px;
+    transform-origin: top left;
+    animation: wave 2s infinite;
+}
+
+.arm-right {
+    right: 5px;
+}
+
+.leg-left, .leg-right {
+    position: absolute;
+    bottom: 0;
+    width: 20px;
+    height: 70px;
+    background: #0565a6;
+}
+
+.leg-left {
+    left: 25px;
+}
+
+.leg-right {
+    right: 25px;
+}
+
+@keyframes wave {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(30deg); }
+    100% { transform: rotate(0deg); }
+}

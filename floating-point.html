@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Point Number</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page-title">Floating Point Number Manipulation</div>
+<div class="floating-point-container">
+    <div class="label title-text" id="algorithm-title" style="display: none;">Представление числа с плавающей запятой в форматах в формате IEEE 754 Floating Point</div>
+    <!-- Гифка, показываемая при загрузке страницы -->
+    <div id="gif-container" style="display: none;">
+        <div id="character">
+            <div class="head">
+                <div class="eye-left">
+                    <div class="pupil-left"></div>
+                </div>
+                <div class="eye-right">
+                    <div class="pupil-right"></div>
+                </div>
+                <div class="nose"></div>
+                <div class="mouth"></div>
+                <div class="hair"></div>
+            </div>
+            <div class="body"></div>
+            <div class="arm-left"></div>
+            <div class="arm-right"></div>
+            <div class="leg-left"></div>
+            <div class="leg-right"></div>
+        </div>
+        <!-- Приветственная надпись -->
+        <div class="welcome-text">Добро пожаловать! Здесь вы можете поближе познакомиться с вещественными числами. Выберите любой интересующий вас алгоритм.</div>
+    </div>
+    <!-- Обернем все содержимое в контейнер с id -->
+    <div id="floating-point-representation" style="display: none;">
+        <!-- Первое поле ввода числа -->
+        <div class="input-container">
+            <input type="number" class="number-input" value="1" placeholder="Введите число" onchange="updateFloatingPoint(this.value)">
+        </div>
+        <div class="label sign-label">Знак</div>
+        <div class="binary-output" id="sign-output"></div>
+        <div class="label exponent-label">Порядок</div>
+        <div class="binary-output" id="exponent-output"></div>
+        <div class="label mantissa-label">Мантисса</div>
+        <div class="binary-output" id="mantissa-output"></div>
+    </div>
+    <!-- Второе поле ввода, изначально скрытое -->
+    <div id="secondInput" style="display: none;">
+        <div class="label">Округленное число (к целому)</div>
+        <div class="input-container">
+            <input type="number" class="number-input" placeholder="Округленное число" id="rounded-output" readonly>
+        </div>
+        <div class="label">Знак</div>
+        <div class="binary-output" id="sign-output-second"></div>
+        <div class="label">Порядок</div>
+        <div class="binary-output" id="exponent-output-second"></div>
+        <div class="label">Мантисса</div>
+        <div class="binary-output" id="mantissa-output-second"></div>
+    </div>
+    <!-- Второе поле ввода для округленного числа при округлении к нулю -->
+    <div id="secondInputZero" style="display: none;">
+        <div class="label">Округленное число (к нулю)</div>
+        <div class="input-container">
+            <input type="number" class="number-input" placeholder="Округленное число (к нулю)" id="rounded-output-zero" readonly>
+        </div>
+        <div class="label">Знак</div>
+        <div class="binary-output" id="sign-output-second-zero"></div>
+        <div class="label">Порядок</div>
+        <div class="binary-output" id="exponent-output-second-zero"></div>
+        <div class="label">Мантисса</div>
+        <div class="binary-output" id="mantissa-output-second-zero"></div>
+    </div>
+    <div id="secondInputInfP" style="display: none;">
+        <div class="label">Округленное число (к +∞)</div>
+        <div class="input-container">
+            <input type="number" class="number-input" placeholder="Округленное число (к +∞)" id="rounded-output-infp" readonly>
+        </div>
+        <div class="label">Знак</div>
+        <div class="binary-output" id="sign-output-second-infp"></div>
+        <div class="label">Порядок</div>
+        <div class="binary-output" id="exponent-output-second-infp"></div>
+        <div class="label">Мантисса</div>
+        <div class="binary-output" id="mantissa-output-second-infp"></div>
+    </div>
+    <div id="secondInputInfM" style="display: none;">
+        <div class="label">Округленное число (к -∞)</div>
+        <div class="input-container">
+            <input type="number" class="number-input" placeholder="Округленное число (к -∞)" id="rounded-output-infm" readonly>
+        </div>
+        <div class="label">Знак</div>
+        <div class="binary-output" id="sign-output-second-infm"></div>
+        <div class="label">Порядок</div>
+        <div class="binary-output" id="exponent-output-second-infm"></div>
+        <div class="label">Мантисса</div>
+        <div class="binary-output" id="mantissa-output-second-infm"></div>
+    </div>
+    <div id="NaN" style="display: none;">
+        <div>
+            <label for="fnumber">Первое число:</label>
+            <input type="number" id="fnumber" name="fnumber">
+            <select id="fnumber-infinity">
+                <option value="finite">Finite</option>
+                <option value="positive">Positive Infinity</option>
+                <option value="negative">Negative Infinity</option>
+            </select>
+        </div>
+        <div>
+            <label for="snumber">Второе число:</label>
+            <input type="number" id="snumber" name="snumber">
+            <select id="snumber-infinity">
+                <option value="finite">Finite</option>
+                <option value="positive">Positive Infinity</option>
+                <option value="negative">Negative Infinity</option>
+            </select>
+        </div>
+        <div class="label">Выберите операцию</div>
+        <div class="input-container">
+            <select id="operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+        </div>
+        <div class="label">Результат</div>
+        <div class="input-container">
+            <input type="text" placeholder="Результат" id="result" readonly>
+        </div>
+        <div id="floating-point-display">
+            <div class="label">Знак</div>
+            <div class="binary-output" id="sign-output-nan"></div>
+            <div class="label">Порядок</div>
+            <div class="binary-output" id="exponent-output-nan"></div>
+            <div class="label">Мантисса</div>
+            <div class="binary-output" id="mantissa-output-nan"></div>
+        </div>
+        <div class="label" id="nan-reason" style="display: none;">Причина NaN: <span id="nan-reason-text"></span></div>
+    </div>
+    <div id="vax" style="display: none;">
+        <div class="llabel">Представление числа с плавающей запятой в формате VAX</div>
+        <div class="input-container">
+            <input type="number" class="number-input" placeholder="Введите число" id="vaxx">
+        </div>
+        <div class="label">Знак</div>
+        <div class="binary-output" id="sign-vax"></div>
+        <div class="label">Порядок</div>
+        <div class="binary-output" id="exponent-vax"></div>
+        <div class="label">Мантисса</div>
+        <div class="binary-output" id="mantissa-vax"></div>
+    </div>
+    <div id="mf" style="display: none;">
+        <div class="llabel">Представление числа с плавающей запятой в формате MF</div>
+        <div class="input-container">
+            <input type="number" class="number-input" placeholder="Введите число" id="mff">
+        </div>
+        <div class="label">Знак</div>
+        <div class="binary-output" id="sign-mf"></div>
+        <div class="label">Порядок</div>
+        <div class="binary-output" id="exponent-mf"></div>
+        <div class="label">Мантисса</div>
+        <div class="binary-output" id="mantissa-mf"></div>
+    </div>
+    <div id="vax-to-number" style="display: none;">
+        <div class="llabel">Определение значения числа с плавающей запятой по его представлению формате VAX</div>
+        <div class="input-container">
+            <div class="input-group">
+                <label class="input-label">Знак</label>
+                <input type="text" class="number-input" placeholder="Введите знак (0 или 1)" id="vax-sign">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Порядок</label>
+                <input type="text" class="number-input" placeholder="Введите порядок" id="vax-exponent">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Мантисса</label>
+                <input type="text" class="number-input" placeholder="Введите мантиссу" id="vax-mantissa">
+            </div>
+        </div>
+        <button id="convert-vax-button">Перевести в число</button>
+        <div id="vax-number-result"></div>
+        <div id="vax-steps" class="step-animation"></div>
+    </div>
+    <div id="ieee-to-number" style="display: none;">
+        <div class="llabel">Определение значения числа с плавающей запятой по его представлению формате IEEE</div>
+        <div class="input-container">
+            <div class="input-group">
+                <label class="input-label">Знак</label>
+                <input type="text" class="number-input" placeholder="Введите знак (0 или 1)" id="ieee-sign">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Порядок</label>
+                <input type="text" class="number-input" placeholder="Введите порядок" id="ieee-exponent">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Мантисса</label>
+                <input type="text" class="number-input" placeholder="Введите мантиссу" id="ieee-mantissa">
+            </div>
+        </div>
+        <button id="convert-ieee-button">Перевести в число</button>
+        <div id="ieee-number-result"></div>
+        <div id="ieee-steps" class="step-animation"></div>
+    </div>
+    <div id="mf-to-number" style="display: none;">
+        <div class="llabel">Определение значения числа с плавающей запятой по его представлению формате MF</div>
+        <div class="input-group1" >
+            <input type="text" class="number-input1" placeholder="Введите число в 16-ричном формате" id="number">
+        </div>
+        <div class="input-container">
+            <div class="input-group">
+                <label class="input-label">Знак</label>
+                <input type="text" class="number-input" placeholder="Введите знак (0 или 1)" id="mf-sign" readonly>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Порядок</label>
+                <input type="text" class="number-input" placeholder="Введите порядок" id="mf-exponent" readonly>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Мантисса</label>
+                <input type="text" class="number-input1" placeholder="Введите мантиссу" id="mf-mantissa" readonly>
+            </div>
+        </div>
+        <button id="convert-mf-button">Перевести в число</button>
+        <div id="mf-number-result"></div>
+        <div id="mf-steps" class="step-animation"></div>
+    </div>
+</div>
+<div class="algorithm-menu">
+    <button class="algorithm-menu-button" onclick="toggleAlgorithmList()">Выбрать алгоритм</button>
+    <div class="algorithm-list" id="algorithm-list">
+        <div class="algorithm-item" onclick="selectAlgorithm(1)">Округление к ближайшему целому</div>
+        <div class="algorithm-item" onclick="selectAlgorithm(2)">Округление к нулю</div>
+        <div class="algorithm-item" onclick="selectAlgorithm(3)">Округление к плюс бесконечности</div>
+        <div class="algorithm-item" onclick="selectAlgorithm(4)">Округление к минус бесконечности</div>
+        <div class="algorithm-item" onclick="selectAlgorithm(5)">NaN числа</div>
+        <div class="algorithm-item" onclick="selectAlgorithm(6)">Представление чисел с плавающей запятой в форматах MF, VAX и IEEE</div>
+        <!-- Кнопки для выбора формата -->
+        <div id="additional-options" style="display: none;">
+            <button class="algorithm-item" onclick="selectAlgorithm(6.1)">IEEE</button>
+            <button class="algorithm-item" onclick="selectAlgorithm(6.2)">VAX</button>
+            <button class="algorithm-item" onclick="selectAlgorithm(6.3)">MF</button>
+        </div>
+        <div class="algorithm-item" onclick="selectAlgorithm(7)">Определение значения числа с плавающей запятой по его представлению в форматах MF, VAX и IEEE</div>
+        <div id="additional-options2" style="display: none;">
+            <button class="algorithm-item" onclick="selectAlgorithm(7.1)">IEEE</button>
+            <button class="algorithm-item" onclick="selectAlgorithm(7.2)">VAX</button>
+            <button class="algorithm-item" onclick="selectAlgorithm(7.3)">MF</button>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+<script src="rounding_algorithmZ.js"></script>
+<script src="rounding_algorithm0.js"></script>
+<script src="znak.js"></script>
+<script src="poryadok.js"></script>
+<script src="mantissa.js"></script>
+<script src="rounding_algorithmInfP.js"></script>
+<script src="rounding_algorithmInfM.js"></script>
+<script src="nan.js"></script>
+<script src="vax.js"></script>
+<script src="poryadokvax.js"></script>
+<script src="mantissavax.js"></script>
+<script src="mf.js"></script>
+<script src="mfznak.js"></script>
+<script src="mfporyadok.js"></script>
+<script src="mfmantissa.js"></script>
+<script src="vaxconverter.js"></script>
+<script src="ieeeconverter.js"></script>
+<script src="mfconverter.js"></script>
+</body>
+</html>
