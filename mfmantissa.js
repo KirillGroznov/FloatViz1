@@ -1,31 +1,35 @@
-let isMFMantissaAnimationRunning = false;
+let isMFMantissaAnimationRunning = false; // Флаг для отслеживания состояния анимации
 let initialMFMantissaValue = ''; // Переменная для хранения начального значения мантиссы в MF
 
+// Функция для анимации изменения мантиссы
 function animateMFMantissaChange(inputValue) {
     if (isMFMantissaAnimationRunning) {
-        return;
+        return; // Если анимация уже запущена, выход из функции
     }
 
     // Сохраняем начальное значение мантиссы перед запуском анимации
     initialMFMantissaValue = document.getElementById("mantissa-mf").innerHTML;
 
-    isMFMantissaAnimationRunning = true;
+    isMFMantissaAnimationRunning = true; // Устанавливаем флаг анимации в true
     const mantissaOutputElement = document.getElementById("mantissa-mf");
-    mantissaOutputElement.innerHTML = '';
-    mantissaOutputElement.style.transition = "background-color 0.5s, color 0.5s";
-    mantissaOutputElement.style.color = "white";
+    mantissaOutputElement.innerHTML = ''; // Очищаем содержимое элемента вывода мантиссы
+    mantissaOutputElement.style.transition = "background-color 0.5s, color 0.5s"; // Устанавливаем CSS-переходы для фона и цвета текста
+    mantissaOutputElement.style.color = "white"; // Устанавливаем белый цвет текста
 
     // Шаг 1: Преобразование числа в шестнадцатеричный формат
     const step1 = createStepElement3('Шаг 1: Преобразование числа в шестнадцатеричный формат');
-    mantissaOutputElement.appendChild(step1);
+    mantissaOutputElement.appendChild(step1); // Добавляем шаг 1 в элемент вывода мантиссы
+
     setTimeout(() => {
         const hexadecimal = convertToHexadecimalSteps(inputValue); // Преобразуем число в шестнадцатеричный формат
         let binaryDetail = `<br>Число: ${inputValue} → Шестнадцатеричный формат: <br>`;
+
+        // Добавляем каждый шаг конвертации в подробное описание
         hexadecimal.forEach(step => {
             binaryDetail += `${step}<br>`;
         });
-        step1.innerHTML += binaryDetail;
 
+        step1.innerHTML += binaryDetail; // Добавляем подробное описание в шаг 1
 
         // Шаг 2: Нормализация числа
         const step2 = createStepElement3('Шаг 2: Нормализация числа');
@@ -52,8 +56,11 @@ function animateMFMantissaChange(inputValue) {
             }
 
             const step3 = createStepElement3('Шаг 3: Определение мантиссы');
+
             mantissaOutputElement.appendChild(step3);
+
             setTimeout(() => {
+
                 const tetradTable = `
         <table border="1">
             <caption>Таблица тетрад:</caption>
@@ -82,6 +89,9 @@ function animateMFMantissaChange(inputValue) {
                 <tr><td>F</td><td>1111</td></tr>
             </tbody>
         </table>`;
+                // Создаем строку, содержащую HTML-код таблицы тетрад.
+                // В таблице отображаются соответствия между шестнадцатеричными цифрами (0-F) и их двоичными представлениями (0000-1111).
+
                 // Вычисляем мантиссу
                 const mantissaHex = calculateMFMantissa(inputValue);
 

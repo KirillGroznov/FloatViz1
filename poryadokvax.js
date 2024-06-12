@@ -1,7 +1,12 @@
+// Флаг для отслеживания состояния анимации изменения порядка числа в формате VAX
 let isVAXExponentAnimationRunning = false;
-let initialVAXExponentValue = ''; // Переменная для хранения начального значения порядка
 
+// Переменная для хранения начального значения порядка числа в формате VAX
+let initialVAXExponentValue = '';
+
+// Функция для анимации изменения порядка числа в формате VAX
 function animateVAXExponentChange(inputValue) {
+    // Проверяем, выполняется ли уже анимация
     if (isVAXExponentAnimationRunning) {
         return;
     }
@@ -9,22 +14,28 @@ function animateVAXExponentChange(inputValue) {
     // Сохраняем начальное значение порядка перед запуском анимации
     initialVAXExponentValue = document.getElementById("exponent-vax").innerHTML;
 
+    // Устанавливаем флаг, что анимация начата
     isVAXExponentAnimationRunning = true;
+
+    // Получаем элемент вывода порядка в формате VAX
     const exponentOutputElement = document.getElementById("exponent-vax");
     exponentOutputElement.innerHTML = '';
-    exponentOutputElement.style.transition = "background-color 0.5s, color 0.5s";
-    exponentOutputElement.style.color = "white";
+    exponentOutputElement.style.transition = "background-color 0.5s, color 0.5s"; // Добавляем плавный переход
+    exponentOutputElement.style.color = "white"; // Устанавливаем белый цвет текста для анимации
 
     // Шаг 1: Преобразование числа в двоичный формат
     const step1 = createStepElement('Шаг 1: Преобразование числа в двоичный формат');
     exponentOutputElement.appendChild(step1);
     setTimeout(() => {
+        // Получаем шаги преобразования числа в двоичный формат
         const binarySteps = convertToBinarySteps(inputValue);
         let binaryDetail = `<br>Число: ${inputValue} → Двоичный формат: <br>`;
+        // Формируем подробности преобразования для шага
         binarySteps.forEach(step => {
             binaryDetail += `${step}<br>`;
         });
-        step1.innerHTML += binaryDetail;
+        step1.innerHTML += binaryDetail; // Добавляем подробности преобразования в шаг
+
 
         // Шаг 2: Нормализация числа
         const step2 = createStepElement('Шаг 2: Нормализация числа');
@@ -106,10 +117,15 @@ exponentOutputElementVAX.addEventListener('click', function() {
     animateVAXExponentChange(inputValue);
 });
 
+// Функция для создания элемента шага анимации с заданным текстом
 function createStepElement(stepText) {
+    // Создаем новый элемент div
     const step = document.createElement('div');
+    // Добавляем класс для стилизации анимации
     step.classList.add('step-animation');
+    // Устанавливаем текст шага
     step.innerHTML = stepText;
+    // Возвращаем созданный элемент
     return step;
 }
 

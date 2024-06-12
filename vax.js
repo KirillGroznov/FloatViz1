@@ -1,18 +1,26 @@
+// Этот код добавляет обработчик события, который срабатывает, когда весь HTML-документ загружен и готов к обработке JavaScript
 document.addEventListener("DOMContentLoaded", function () {
+    // Функция для преобразования числа в представление VAX
     function convertToVAX(number) {
+        // Создание нового массива Float32Array и инициализация его значением number
         let float32Array = new Float32Array(1);
         float32Array[0] = number;
+        // Создание массива Int32Array на основе буфера данных float32Array
         let int32Array = new Int32Array(float32Array.buffer);
 
+        // Получение целочисленного представления числа
         let intRepresentation = int32Array[0];
 
+        // Извлечение знака, экспоненты и мантиссы из целочисленного представления числа
         let sign = (intRepresentation >> 31) & 1;
         let exponent = (intRepresentation >> 23) & 0xFF;
         let mantissa = intRepresentation & 0x7FFFFF;
 
+        // Коррекция экспоненты для представления VAX
         exponent -= 126;
         exponent += 128;
 
+        // Возвращение объекта с полями sign, exponent и mantissa
         return {
             sign: sign,
             exponent: exponent,
@@ -20,23 +28,34 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
+    // Функция для обновления представления VAX числа
     function updateVAXRepresentation(number) {
+        // Получение представления VAX для заданного числа
         let vaxRepresentation = convertToVAX(number);
 
+        // Обновление отображения знака, экспоненты и мантиссы на веб-странице
         document.getElementById("sign-vax").innerHTML = `<div class="bit sign">${vaxRepresentation.sign}</div>`;
         document.getElementById("exponent-vax").innerHTML = vaxRepresentation.exponent.toString(2).padStart(8, '0').split('').map(bit => `<div class="bit exponent">${bit}</div>`).join('');
         document.getElementById("mantissa-vax").innerHTML = vaxRepresentation.mantissa.toString(2).padStart(23, '0').split('').map(bit => `<div class="bit mantissa">${bit}</div>`).join('');
     }
 
+    // Функция инициализации
     function init() {
+        // Получаем элемент ввода числа с id "vaxx"
         let numberInput = document.getElementById("vaxx");
-        numberInput.value = "1"; // Установка значения по умолчанию в "1"
-        updateVAXRepresentation(1); // Обновление представления для значения по умолчанию
+        // Устанавливаем значение по умолчанию "1" в поле ввода
+        numberInput.value = "1";
+        // Обновляем представление VAX для значения по умолчанию
+        updateVAXRepresentation(1);
+        // Добавляем обработчик события ввода для поля ввода числа
         numberInput.addEventListener("input", function () {
+            // Получаем введенное число из поля ввода
             let number = parseFloat(numberInput.value);
+            // Если введенное значение является числом, обновляем представление VAX
             if (!isNaN(number)) {
                 updateVAXRepresentation(number);
             } else {
+                // Если введенное значение не является числом, очищаем представление VAX
                 document.getElementById("sign-vax").textContent = "";
                 document.getElementById("exponent-vax").textContent = "";
                 document.getElementById("mantissa-vax").textContent = "";
@@ -47,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Флаг, указывающий, выполняется ли анимация в данный момент
     let isAnimationRunning = false;
 
-    // Функция для анимации изменения значения знака числа
+    // Эта функция запускает анимацию изменения значения знака числа
     function animateSignChange(newSign) {
         // Проверяем, выполняется ли уже анимация
         if (isAnimationRunning) {
@@ -57,8 +76,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Устанавливаем флаг, что анимация начата
         isAnimationRunning = true;
 
+        // Получаем элемент, в котором будет отображаться знак числа
         const signOutputElement = document.getElementById("sign-vax");
-        // Изменяем цвет и фон элемента для анимации
+
+        // Изменяем стили элемента для анимации
         signOutputElement.style.transition = "background-color 0.5s, color 0.5s"; // Добавляем плавный переход
         signOutputElement.style.backgroundColor = "orange";
         signOutputElement.style.color = "white";
@@ -74,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
         signOutputElement.appendChild(comparisonAnimation);
         signOutputElement.appendChild(zeroAnimation);
 
-        // Ждем некоторое время для анимации
+        // Ждем некоторое время для анимации сравнения с нулем
         setTimeout(function() {
             // Плавно меняем цвет в соответствии с полученным значением знака
             if (newSign === "0") {
@@ -117,6 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
         animateSignChange(sign);
     });
 
-
+// Инициализация при загрузке страницы
     init();
 });

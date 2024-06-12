@@ -1,23 +1,32 @@
 function updateFloatingPoint(inputNumber) {
+    // Получаем элементы для отображения знака, порядка и мантиссы
     const signOutputElement = document.getElementById("sign-output");
     const exponentOutputElement = document.getElementById("exponent-output");
     const mantissaOutputElement = document.getElementById("mantissa-output");
 
+    // Проверяем, является ли входное число NaN
     if (isNaN(inputNumber)) {
+        // Если входное число не является числом, отображаем сообщение об ошибке
         signOutputElement.innerHTML = "Invalid input";
         exponentOutputElement.innerHTML = "";
         mantissaOutputElement.innerHTML = "";
         return;
     }
 
+    // Определяем знак входного числа
     const sign = inputNumber >= 0 ? "0" : "1";
+    // Вычисляем абсолютное значение входного числа
     const absoluteValue = Math.abs(inputNumber);
+    // Вычисляем экспоненту входного числа
     const exponent = Math.floor(Math.log2(absoluteValue));
-    const mantissa = absoluteValue / Math.pow(2, exponent) - 1; // Нормализуем мантиссу
+    // Вычисляем нормализованную мантиссу входного числа
+    const mantissa = absoluteValue / Math.pow(2, exponent) - 1;
 
+    // Преобразуем экспоненту и мантиссу в двоичные строки
     let exponentBinary = (exponent + 127).toString(2).padStart(8, '0');
     let mantissaBinary = mantissa.toString(2).substring(2).padEnd(23, '0').slice(0, 23); // Ограничиваем длину мантиссы 23 битами
 
+    // Формируем HTML для отображения знака, порядка и мантиссы
     let signBit = `<div class="bit sign">${sign}</div>`;
     let exponentBits = '';
     for (let i = 0; i < exponentBinary.length; i++) {
@@ -28,23 +37,28 @@ function updateFloatingPoint(inputNumber) {
         mantissaBits += `<div class="bit mantissa">${mantissaBinary[i]}</div>`;
     }
 
+    // Отображаем знак, порядок и мантиссу
     signOutputElement.innerHTML = signBit;
     exponentOutputElement.innerHTML = exponentBits;
     mantissaOutputElement.innerHTML = mantissaBits;
 
+    // Вызываем функцию для округления и отображения округленного числа
     roundAndDisplay(inputNumber);
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    updateFloatingPoint(1); // Initialize with value 1
+    updateFloatingPoint(1); // Инициализируем значение числа 1 при загрузке страницы
     // Показываем гифку при загрузке страницы
     document.getElementById("gif-container").style.display = "block";
 });
 
 function selectAlgorithm(algorithmNumber) {
+    // Выводим номер выбранного алгоритма в консоль для отладки
     console.log("Selected Algorithm " + algorithmNumber);
+    // Получаем элемент заголовка алгоритма
     const algorithmTitleElement = document.getElementById("algorithm-title");
 
+    // Объект, содержащий названия алгоритмов
     const algorithms = {
         1: "Округление к ближайшему целому",
         2: "Округление к нулю",
@@ -55,9 +69,11 @@ function selectAlgorithm(algorithmNumber) {
         7: "Определение значения числа с плавающей запятой по его представлению в формате MF, VAX и IEEE"
     };
 
+    // Получаем элементы для отображения представления числа с плавающей запятой и GIF-изображения
     const floatingPointRepresentation = document.getElementById("floating-point-representation");
     const gifcontainer = document.getElementById("gif-container");
 
+    // Определяем видимость элементов в зависимости от выбранного алгоритма
     if (algorithmNumber === 1) {
         document.getElementById("secondInput").style.display = "block";
         document.getElementById("secondInputZero").style.display = "none";
@@ -262,10 +278,15 @@ function selectAlgorithm(algorithmNumber) {
 
 // Функция переключения списка алгоритмов
 function toggleAlgorithmList() {
+    // Получаем элемент списка алгоритмов
     var algorithmList = document.getElementById("algorithm-list");
+    // Проверяем текущее состояние отображения списка
     if (algorithmList.style.display === "block") {
+        // Если список отображается, скрываем его
         algorithmList.style.display = "none";
     } else {
+        // Если список скрыт, отображаем его
         algorithmList.style.display = "block";
     }
 }
+

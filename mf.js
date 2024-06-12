@@ -46,23 +46,39 @@ function convertToMF(number) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Функция для обновления представления числа в формате MF
     function updateMFRepresentation(number) {
         let mfRepresentation = convertToMF(number);
 
+        // Обновляем знак числа
         document.getElementById("sign-mf").innerHTML = `<div class="bit sign">${mfRepresentation.sign}</div>`;
+
+        // Обновляем экспоненту
         document.getElementById("exponent-mf").innerHTML = mfRepresentation.characteristic.split('').map(bit => `<div class="bit exponent">${bit}</div>`).join('');
+
+        // Обновляем мантиссу
         document.getElementById("mantissa-mf").innerHTML = mfRepresentation.mantissa.split('').map(bit => `<div class="bit mantissa">${bit}</div>`).join('');
     }
 
+    // Функция для инициализации
     function init() {
         let numberInput = document.getElementById("mff");
+
+        // Устанавливаем начальное значение
         numberInput.value = "250";
+
+        // Обновляем представление для начального значения
         updateMFRepresentation(250);
+
+        // Добавляем обработчик события для обновления представления при изменении ввода
         numberInput.addEventListener("input", function () {
             let number = parseFloat(numberInput.value);
+
+            // Проверяем, является ли введенное значение числом
             if (!isNaN(number)) {
                 updateMFRepresentation(number);
             } else {
+                // Очищаем представление, если введенное значение не является числом
                 document.getElementById("sign-mf").textContent = "";
                 document.getElementById("exponent-mf").textContent = "";
                 document.getElementById("mantissa-mf").textContent = "";
@@ -70,5 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Инициализируем приложение
     init();
 });
+

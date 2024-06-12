@@ -1,34 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Функция для преобразования шестнадцатеричного числа в двоичное
     function convertHexToBinary(hex) {
         return hex.split('').map(char => parseInt(char, 16).toString(2).padStart(4, '0')).join('');
     }
 
+    // Функция для удаления пробелов из строки
     function removeSpaces(str) {
         return str.replace(/\s+/g, '');
     }
 
+    // Функция для преобразования числа в формате MF в десятичное число
     function convertMFToNumber(hexNumber) {
+        // Преобразуем шестнадцатеричное число в двоичное
         let binaryNumber = convertHexToBinary(hexNumber);
-        binaryNumber = binaryNumber.padStart(32, '0');
+        binaryNumber = binaryNumber.padStart(32, '0'); // Дополняем двоичное число до 32 бит
 
+        // Извлекаем знак, экспоненту и мантиссу
         let sign = binaryNumber.charAt(0);
         let exponent = binaryNumber.substring(1, 8);
         let mantissa = binaryNumber.substring(8);
 
+        // Обновляем значения в соответствующих полях
         document.getElementById('mf-sign').value = sign;
         document.getElementById('mf-exponent').value = exponent;
         document.getElementById('mf-mantissa').value = mantissa;
 
-        // Удаляем пробелы из вводимых значений
+        // Удаляем пробелы из значений
         sign = removeSpaces(sign);
         exponent = removeSpaces(exponent);
         mantissa = removeSpaces(mantissa);
 
-        // Очищаем предыдущие шаги
+        // Очищаем предыдущие шаги преобразования
         const mfStepsElement = document.getElementById('mf-steps');
         mfStepsElement.innerHTML = '';
 
-        // Производим вычисления и получаем шаги
+        // Производим вычисления и получаем шаги преобразования
         const steps = convertMFToSteps(sign, exponent, mantissa);
 
         // Выполняем функцию convertFromBinarySteps и получаем результаты
@@ -107,27 +113,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function convertMFToSteps(sign, exponent, mantissa) {
+        // Преобразуем знак и экспоненту из двоичного формата в десятичный
         sign = parseInt(sign, 2);
         exponent = parseInt(exponent, 2);
 
+        // Шаг 1: Выводим экспоненту в десятичной форме
         const step1 = `Шаг 1: Порядок в десятичной форме: ${exponent}`;
+
+        // Шаг 2: Корректируем экспоненту, отнимая 64 (смещение в формате MF)
         const adjustedExponent = exponent - 64;
         const step2 = `Шаг 2: Отнимаем 64 от числа, которое мы получили (величина смещения в формате MF равна 64): ${adjustedExponent}`;
 
+        // Преобразуем мантиссу из двоичного формата в шестнадцатеричный
         const mantissaHexString = parseInt(mantissa, 2).toString(16).toUpperCase().padStart(6, '0');
         const step3 = `Шаг 3: Переводим мантиссу в 16-ричный формат: ${mantissaHexString}`;
 
+        // Шаг 4: Корректируем мантиссу, перемещая запятую согласно значению экспоненты
         let adjustedMantissa = mantissaHexString;
         if (adjustedExponent >= 0) {
+            // Если экспонента положительная, сдвигаем запятую влево
             adjustedMantissa = adjustedMantissa.slice(0, adjustedExponent) + '.' + adjustedMantissa.slice(adjustedExponent);
-            adjustedMantissa = adjustedMantissa.replace(/^0+|0+$/g, ''); // Удаление лишних нулей справа
+            adjustedMantissa = adjustedMantissa.replace(/^0+|0+$/g, ''); // Удаляем лишние нули
         } else {
+            // Если экспонента отрицательная, добавляем нули перед мантиссой
             adjustedMantissa = ' 0.' + '0'.repeat(-adjustedExponent) + adjustedMantissa;
-            adjustedMantissa = adjustedMantissa.replace(/^0+|0+$/g, ''); // Удаление лишних нулей справа
+            adjustedMantissa = adjustedMantissa.replace(/^0+|0+$/g, ''); // Удаляем лишние нули
         }
         const step4 = `Шаг 4: Двигаем запятую в мантиссе (на экспоненту, полученную во втором шаге): ${adjustedMantissa.toUpperCase()} * 16^${adjustedExponent}`;
 
-        // Перевод целой части мантиссы из 16-ричного в десятичный формат
+        // Перевод целой части мантиссы из шестнадцатеричного в десятичный формат
         const integerPart = parseInt(adjustedMantissa.split('.')[0], 16);
 
         // Получение дробной части мантиссы
@@ -136,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Инициализация переменной для хранения дробной части мантиссы в десятичном формате
         let decimalFraction = 0;
 
-        // Перевод дробной части мантиссы из 16-ричного в десятичный формат
+        // Перевод дробной части мантиссы из шестнадцатеричного в десятичный формат
         for (let i = 0; i < fractionalPart.length; i++) {
             // Переводим каждую цифру из шестнадцатеричной системы в десятичную
             const digit = parseInt(fractionalPart[i], 16);
@@ -156,23 +170,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Создаем шаг 5 с переводом мантиссы в десятичный формат
         const step5 = `ОТВЕТ: ${finalResult}.  ${signDescription}`;
 
+        // Возвращаем все шаги в виде массива строк
         return [step1, step2, step3, step4, step5];
     }
 
-    function showSteps(steps) {
-        const mfStepsElement = document.getElementById('mf-steps');
-        mfStepsElement.innerHTML = '';
-        steps.forEach((step, index) => {
-            setTimeout(() => {
-                const stepElement = document.createElement('div');
-                stepElement.className = 'mf-step';
-                stepElement.textContent = step;
-                mfStepsElement.appendChild(stepElement);
-                setTimeout(() => stepElement.classList.add('visible'), 50);
-            }, index * 1000);
-        });
-    }
 
+    // Функция для конвертации мантиссы из двоичного формата в шестнадцатеричный с шагами
     function convertMantissaToHexSteps(mantissa) {
         const steps = [];
         let hexString = '';
@@ -194,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return { hexString, steps };
     }
 
+    // Функция для конвертации из шестнадцатеричного формата в десятичный с шагами
     function convertFromHexSteps(hexString) {
         // Разделяем строку на целую и дробную части (если есть)
         const parts = hexString.split('.');
@@ -235,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
+    // Функция для вычисления мантиссы с учетом экспоненты
     function calculateAdjustedMantissa1(sign, exponent, mantissa) {
         // Преобразуем экспоненту из двоичного формата в десятичный
         const exponentDecimal = parseInt(exponent, 2);
@@ -259,8 +264,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return adjustedMantissa;
     }
 
+    // Добавляем обработчик события на кнопку с id 'convert-mf-button'
     document.getElementById('convert-mf-button').addEventListener('click', () => {
+        // Получаем значение из поля ввода с id 'number'
         const hexNumber = document.getElementById('number').value;
+        // Вызываем функцию конвертации числа MF
         convertMFToNumber(hexNumber);
     });
 });

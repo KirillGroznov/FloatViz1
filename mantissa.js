@@ -1,29 +1,29 @@
-let isMantissaAnimationRunning = false;
+let isMantissaAnimationRunning = false; // Флаг для отслеживания состояния анимации мантиссы
 let initialMantissaValue = ''; // Переменная для хранения начального значения мантиссы
 
 function animateMantissaChange(inputValue) {
     if (isMantissaAnimationRunning) {
-        return;
+        return; // Если анимация мантиссы уже запущена, выходим из функции
     }
 
     // Сохраняем начальное значение мантиссы перед запуском анимации
     initialMantissaValue = document.getElementById("mantissa-output").innerHTML;
 
-    isMantissaAnimationRunning = true;
-    const mantissaOutputElement = document.getElementById("mantissa-output");
-    mantissaOutputElement.innerHTML = '';
-    mantissaOutputElement.style.transition = "background-color 0.5s, color 0.5s";
-    mantissaOutputElement.style.color = "white";
+    isMantissaAnimationRunning = true; // Устанавливаем флаг запущенной анимации мантиссы
+    const mantissaOutputElement = document.getElementById("mantissa-output"); // Получаем элемент вывода мантиссы
+    mantissaOutputElement.innerHTML = ''; // Очищаем содержимое элемента мантиссы
+    mantissaOutputElement.style.transition = "background-color 0.5s, color 0.5s"; // Устанавливаем эффекты перехода
+    mantissaOutputElement.style.color = "white"; // Устанавливаем цвет текста
 
-    const step1 = createStepElement2('Шаг 1: Преобразование числа в двоичный формат');
-    mantissaOutputElement.appendChild(step1);
+    const step1 = createStepElement2('Шаг 1: Преобразование числа в двоичный формат'); // Создаем элемент для шага 1
+    mantissaOutputElement.appendChild(step1); // Добавляем элемент шага 1 в вывод мантиссы
     setTimeout(() => {
-        const binarySteps = convertToBinarySteps(inputValue);
-        let binaryDetail = `<br>Число: ${inputValue} → Двоичный формат: <br>`;
+        const binarySteps = convertToBinarySteps(inputValue); // Преобразуем число в двоичный формат
+        let binaryDetail = `<br>Число: ${inputValue} → Двоичный формат: <br>`; // Формируем строку для отображения преобразования в двоичный формат
         binarySteps.forEach(step => {
-            binaryDetail += `${step}<br>`;
+            binaryDetail += `${step}<br>`; // Добавляем шаг преобразования в строку
         });
-        step1.innerHTML += binaryDetail;
+        step1.innerHTML += binaryDetail; // Добавляем строку преобразования в вывод шага 1
 
         // Шаг 2: Нормализация числа
         const step2 = createStepElement2('Шаг 2: Нормализация числа');
@@ -56,7 +56,7 @@ function animateMantissaChange(inputValue) {
             } else {
                 step2.innerHTML += `<br>Так как экспонента отрицательная (${exponent}), десятичная точка сдвигается вправо.`;
             }
-
+            // Создание элемента для вывода шага 3: Определение мантиссы
             const step3 = createStepElement2('Шаг 3: Определение мантиссы');
             mantissaOutputElement.appendChild(step3);
             setTimeout(() => {
@@ -79,26 +79,26 @@ function animateMantissaChange(inputValue) {
 }
 
 function calculateMantissa(number) {
-    const binary = Math.abs(number).toString(2);
-    const normalizedBinary = normalizeBinary(binary);
+    const binary = Math.abs(number).toString(2); // Преобразуем абсолютное значение числа в двоичную форму
+    const normalizedBinary = normalizeBinary(binary); // Нормализуем двоичное число
     let mantissa;
-    if (normalizedBinary.indexOf('.') === -1) {
-        mantissa = normalizedBinary.substring(1); // Если нет дробной части, берем все биты после первой единицы
+    if (normalizedBinary.indexOf('.') === -1) { // Если нет десятичной точки в нормализованном числе
+        mantissa = normalizedBinary.substring(1); // Берем все биты после первой единицы как мантиссу
     } else {
-        mantissa = normalizedBinary.split('.')[1]; // Берем только дробную часть
+        mantissa = normalizedBinary.split('.')[1]; // Берем только дробную часть как мантиссу
     }
     return mantissa.padEnd(23, '0').slice(0, 23); // Убеждаемся, что мантисса имеет длину 23 бита
 }
 
 // Функция для нормализации двоичного числа
 function normalizeBinary(binary) {
-    if (binary.indexOf('.') === -1) {
-        return binary + ''; // Если нет десятичной точки, добавляем её и ноль
+    if (binary.indexOf('.') === -1) { // Если нет десятичной точки
+        return binary + ''; // Добавляем десятичную точку и ноль в конец
     }
 
-    const [integerPart, fractionalPart] = binary.split('.');
+    const [integerPart, fractionalPart] = binary.split('.'); // Разделяем на целую и дробную части
 
-    // Удаляем лидирующие нули и конкатенируем целую и дробную части
+    // Удаляем лидирующие нули из целой части и объединяем с дробной
     const normalized = integerPart.replace(/^0+/, '') + fractionalPart;
 
     // Определяем позицию первой единицы после удаления лидирующих нулей
@@ -111,14 +111,14 @@ function normalizeBinary(binary) {
 // Обработчик клика по метке мантиссы
 const mantissaLabel = document.querySelector('.mantissa-label');
 mantissaLabel.addEventListener('click', function() {
-    const inputValue = parseFloat(document.querySelector('.number-input').value);
-    animateMantissaChange(inputValue);
+    const inputValue = parseFloat(document.querySelector('.number-input').value); // Получаем ввод пользователя и парсим в число с плавающей запятой
+    animateMantissaChange(inputValue); // Запускаем анимацию изменения мантиссы
 });
 
 // Создаем элемент шага с анимационными стилями
 function createStepElement2(stepText) {
-    const step = document.createElement('div');
-    step.classList.add('animation-color');
-    step.innerHTML = stepText;
-    return step;
+    const step = document.createElement('div'); // Создаем новый элемент div
+    step.classList.add('animation-color'); // Добавляем класс для анимации цвета
+    step.innerHTML = stepText; // Устанавливаем текст шага
+    return step; // Возвращаем созданный элемент
 }

@@ -67,3 +67,4 @@ signOutputElementMF.addEventListener('click', function() {
     // Отображаем анимацию изменения значения знака для формата MF
     animateMFSignChange(signMF);
 });
+

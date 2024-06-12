@@ -61,7 +61,6 @@ function animateSignChange(newSign) {
 // Получаем элемент метки "Знак"
 const signLabel = document.querySelector('.sign-label');
 
-
 // Добавляем слушатель события клика
 signLabel.addEventListener('click', function() {
     // Получаем текущее значение числа из поля ввода
@@ -71,7 +70,3 @@ signLabel.addEventListener('click', function() {
     // Отображаем анимацию изменения значения знака
     animateSignChange(sign);
 });
-
-
-
-

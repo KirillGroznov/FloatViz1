@@ -16,15 +16,15 @@ function animateMFExponentChange(inputValue) {
     exponentOutputElement.style.color = "white";
 
     // Шаг 1: Преобразование числа в шестнадцатеричный формат
-    const step1 = createStepElement('Шаг 1: Преобразование числа в шестнадцатеричный формат');
-    exponentOutputElement.appendChild(step1);
+    const step1 = createStepElement('Шаг 1: Преобразование числа в шестнадцатеричный формат'); // Создаем элемент для шага 1
+    exponentOutputElement.appendChild(step1); // Добавляем элемент шага 1 в вывод порядка
     setTimeout(() => {
         const hexadecimal = convertToHexadecimalSteps(inputValue); // Преобразуем число в шестнадцатеричный формат
         let binaryDetail = `<br>Число: ${inputValue} → Шестнадцатеричный формат: <br>`;
         hexadecimal.forEach(step => {
             binaryDetail += `${step}<br>`;
         });
-        step1.innerHTML += binaryDetail;
+        step1.innerHTML += binaryDetail; // Добавляем детали в шаг 1
 
         // Шаг 2: Нормализация числа
         const step2 = createStepElement('Шаг 2: Нормализация числа');
@@ -107,10 +107,10 @@ exponentOutputElementMF.addEventListener('click', function() {
 });
 
 function createStepElement(stepText) {
-    const step = document.createElement('div');
-    step.classList.add('step-animation');
-    step.innerHTML = stepText;
-    return step;
+    const step = document.createElement('div'); // Создаем элемент div
+    step.classList.add('step-animation'); // Добавляем класс для анимации
+    step.innerHTML = stepText; // Задаем текст шага
+    return step; // Возвращаем созданный элемент
 }
 
 function calculateMFExponent(number) {
@@ -118,49 +118,49 @@ function calculateMFExponent(number) {
     return Math.floor(Math.log(number) / Math.log(16)); // Возвращаем экспоненту числа в формате MF
 }
 function convertToHexadecimalSteps(number) {
-    let integerPart = Math.floor(Math.abs(number));
-    let fractionalPart = Math.abs(number) - integerPart;
-    let steps = [];
+    let integerPart = Math.floor(Math.abs(number)); // Получаем целую часть числа
+    let fractionalPart = Math.abs(number) - integerPart; // Получаем дробную часть числа
+    let steps = []; // Инициализируем массив для хранения шагов
 
     // Преобразование целой части
-    let integerHexadecimal = '';
+    let integerHexadecimal = ''; // Инициализируем строку для хранения шестнадцатеричной целой части
     if (integerPart === 0) {
-        integerHexadecimal = '0';
+        integerHexadecimal = '0'; // Если целая часть равна 0, устанавливаем шестнадцатеричное значение "0"
     } else {
         let originalIntegerPart = integerPart; // Сохраняем исходное значение для отображения в шагах
         while (integerPart > 0) {
-            let remainder = integerPart % 16;
+            let remainder = integerPart % 16; // Получаем остаток от деления на 16
             let hexDigit;
             if (remainder < 10) {
-                hexDigit = remainder.toString();
+                hexDigit = remainder.toString(); // Если остаток меньше 10, используем его же
             } else {
-                // Для цифр от 10 до 15 используем буквы A-F
+                // Для остатков от 10 до 15 используем буквы A-F
                 hexDigit = String.fromCharCode(65 + remainder - 10);
             }
-            steps.push(`Целая часть: ${integerPart} / 16 = ${Math.floor(integerPart / 16)}, остаток = ${hexDigit}`);
-            integerHexadecimal = hexDigit + integerHexadecimal;
-            integerPart = Math.floor(integerPart / 16);
+            steps.push(`Целая часть: ${integerPart} / 16 = ${Math.floor(integerPart / 16)}, остаток = ${hexDigit}`); // Добавляем шаг преобразования целой части
+            integerHexadecimal = hexDigit + integerHexadecimal; // Добавляем символ шестнадцатеричной цифры к строке
+            integerPart = Math.floor(integerPart / 16); // Делаем шаг вперед по целой части
         }
     }
 
     // Преобразование дробной части
-    let fractionalHexadecimal = '';
+    let fractionalHexadecimal = ''; // Инициализируем строку для хранения шестнадцатеричной дробной части
     if (fractionalPart > 0) {
-        fractionalHexadecimal = '.';
+        fractionalHexadecimal = '.'; // Добавляем точку для отделения дробной части
         let maxFractionalDigits = 8; // Максимальное количество знаков после запятой
         while (fractionalPart > 0 && fractionalHexadecimal.length <= maxFractionalDigits) {
-            fractionalPart *= 16;
-            let hexDigit = Math.floor(fractionalPart);
+            fractionalPart *= 16; // Умножаем дробную часть на 16
+            let hexDigit = Math.floor(fractionalPart); // Получаем цифру шестнадцатеричного числа
             if (hexDigit < 10) {
-                fractionalHexadecimal += hexDigit;
+                fractionalHexadecimal += hexDigit; // Если цифра меньше 10, добавляем ее к строке
             } else {
-                fractionalHexadecimal += String.fromCharCode(65 + hexDigit - 10);
+                fractionalHexadecimal += String.fromCharCode(65 + hexDigit - 10); // Иначе, используем буквы A-F
             }
-            steps.push(`Дробная часть: умножаем на 16 = ${fractionalPart}, знак = ${hexDigit}`);
-            fractionalPart -= hexDigit;
+            steps.push(`Дробная часть: умножаем на 16 = ${fractionalPart}, знак = ${hexDigit}`); // Добавляем шаг преобразования дробной части
+            fractionalPart -= hexDigit; // Вычитаем цифру из дробной части
         }
     }
 
-    steps.push(`Итоговое шестнадцатеричное представление: ${integerHexadecimal}${fractionalHexadecimal}`);
-    return steps;
+    steps.push(`Итоговое шестнадцатеричное представление: ${integerHexadecimal}${fractionalHexadecimal}`); // Добавляем итоговое шестнадцатеричное представление числа
+    return steps; // Возвращаем массив шагов
 }

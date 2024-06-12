@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 });
+
 function calculateAdjustedMantissa1(sign, exponent, mantissa) {
     // Преобразуем строковые значения в целые числа для знака и порядка
     sign = parseInt(sign, 2);
