@@ -11,6 +11,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Функция для преобразования числа в формате MF в десятичное число
     function convertMFToNumber(hexNumber) {
+        const mfStepsElement = document.getElementById('mf-steps');
+        mfStepsElement.innerHTML = ''; // Очищаем предыдущие шаги преобразования
+
+        // Дополнение числа до восьми цифр
+        if (hexNumber.length < 8) {
+            hexNumber = hexNumber.padEnd(8, '0');
+            const stepElement = document.createElement('div');
+            stepElement.classList.add('mf-step');
+            stepElement.textContent = 'Число было дополнено нулями: ' + hexNumber;
+            mfStepsElement.appendChild(stepElement);
+        }
+
         // Преобразуем шестнадцатеричное число в двоичное
         let binaryNumber = convertHexToBinary(hexNumber);
         binaryNumber = binaryNumber.padStart(32, '0'); // Дополняем двоичное число до 32 бит
@@ -29,10 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
         sign = removeSpaces(sign);
         exponent = removeSpaces(exponent);
         mantissa = removeSpaces(mantissa);
-
-        // Очищаем предыдущие шаги преобразования
-        const mfStepsElement = document.getElementById('mf-steps');
-        mfStepsElement.innerHTML = '';
 
         // Производим вычисления и получаем шаги преобразования
         const steps = convertMFToSteps(sign, exponent, mantissa);
