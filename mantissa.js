@@ -48,13 +48,13 @@ function animateMantissaChange(inputValue) {
             const shiftedComma = exponent >= 0 ? normalizedBinary.substring(firstSignificantDigitIndex, firstSignificantDigitIndex + 1) + ',' + normalizedBinary.substring(firstSignificantDigitIndex + 1) :
                 normalizedBinary.substring(firstSignificantDigitIndex, firstSignificantDigitIndex + 1) + '.' + normalizedBinary.substring(firstSignificantDigitIndex + 1, Math.abs(exponent) + firstSignificantDigitIndex + 1);
             const normalizedNumber = `${shiftedComma} * 2^(сдвинуто число на ${Math.abs(exponent)} разрядов)`;
-            step2.innerHTML += `<br>При нормализации числа для представления в формате с плавающей запятой, мы представляем его в виде 1,xxx * 2^n. Это делается для того, чтобы получить нормализованную форму числа, где n является экспонентой.<br>Нормализация числа: ${normalizedNumber}`;
+            step2.innerHTML += `<br>При нормализации числа для представления в формате с плавающей запятой, мы представляем его в виде 1,xxx * 2^n. Это делается для того, чтобы получить нормализованную форму числа, где n является порядком.<br>Нормализация числа: ${normalizedNumber}`;
 
             // Пояснение про направление сдвига
             if (exponent >= 0) {
-                step2.innerHTML += `<br>Так как экспонента положительная (${exponent}), десятичная точка сдвигается влево.`;
+                step2.innerHTML += `<br>Так как порядок положительный (${exponent}), десятичная точка сдвигается влево.`;
             } else {
-                step2.innerHTML += `<br>Так как экспонента отрицательная (${exponent}), десятичная точка сдвигается вправо.`;
+                step2.innerHTML += `<br>Так как порядок отрицательный (${exponent}), десятичная точка сдвигается вправо.`;
             }
             // Создание элемента для вывода шага 3: Определение мантиссы
             const step3 = createStepElement2('Шаг 3: Определение мантиссы');

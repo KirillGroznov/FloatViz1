@@ -56,37 +56,37 @@ function animateExponentChange(inputValue) {
             const shiftedComma = exponent >= 0 ? normalizedBinary.substring(firstSignificantDigitIndex, firstSignificantDigitIndex + 1) + ',' + normalizedBinary.substring(firstSignificantDigitIndex + 1) :
                 normalizedBinary.substring(firstSignificantDigitIndex, firstSignificantDigitIndex + 1) + '.' + normalizedBinary.substring(firstSignificantDigitIndex + 1, Math.abs(exponent) + firstSignificantDigitIndex + 1);
             const normalizedNumber = `${shiftedComma} * 2^(сдвинуто число на ${Math.abs(exponent)} разрядов)`;
-            step2.innerHTML += `<br>При нормализации числа для представления в формате с плавающей запятой, мы представляем его в виде 1,xxx * 2^n(в формате IEEE запятая в мантиссе фиксируется после старшей единицы). Это делается для того, чтобы получить нормализованную форму числа, где n является экспонентой.<br>Нормализация числа: ${normalizedNumber}`;
+            step2.innerHTML += `<br>При нормализации числа для представления в формате с плавающей запятой, мы представляем его в виде 1,xxx * 2^n(в формате IEEE запятая в мантиссе фиксируется после старшей единицы). Это делается для того, чтобы получить нормализованную форму числа, где n является порядком.<br>Нормализация числа: ${normalizedNumber}`;
 
             // Пояснение про направление сдвига
             if (exponent >= 0) {
-                step2.innerHTML += `<br>Так как экспонента положительная (${exponent}), десятичная точка сдвигается влево.`;
+                step2.innerHTML += `<br>Так как порядок положительный (${exponent}), десятичная точка сдвигается влево.`;
             } else {
-                step2.innerHTML += `<br>Так как экспонента отрицательная (${exponent}), десятичная точка сдвигается вправо.`;
+                step2.innerHTML += `<br>Так как порядок отрицательный (${exponent}), десятичная точка сдвигается вправо.`;
             }
 
             // Создание элемента шага для вычисления экспоненты
-            const step3 = createStepElement('Шаг 3: Вычисление экспоненты');
+            const step3 = createStepElement('Шаг 3: Вычисление порядка');
             exponentOutputElement.appendChild(step3);
             // Ожидание некоторого времени перед выполнением вычисления экспоненты
             setTimeout(() => {
                 // Вычисление экспоненты числа
                 let exponent = calculateExponent(Math.abs(inputValue));
                 // Добавление результатов вычисления в элемент шага
-                step3.innerHTML += `<br>Вычисление экспоненты: n = ${exponent}`;
+                step3.innerHTML += `<br>Вычисление порядка: n = ${exponent}`;
 
                 // Создание элемента шага для смещения экспоненты
-                const step4 = createStepElement('Шаг 4: Смещение экспоненты');
+                const step4 = createStepElement('Шаг 4: Смещение порядка');
                 exponentOutputElement.appendChild(step4);
                 // Ожидание некоторого времени перед выполнением смещения экспоненты
                 setTimeout(() => {
                     // Вычисление смещенной экспоненты
                     let shiftedExponent = exponent + 127;
                     // Добавление результатов смещения в элемент шага
-                    step4.innerHTML += `<br>Величина смещения в формате IEEE равна 127<br>Смещение экспоненты: ${exponent} + 127 = ${shiftedExponent}`;
+                    step4.innerHTML += `<br>Величина смещения в формате IEEE равна 127<br>Смещение порядка: ${exponent} + 127 = ${shiftedExponent}`;
 
                     // Создание элемента шага для преобразования экспоненты в двоичное представление
-                    const step5 = createStepElement('Шаг 5: Преобразование экспоненты в двоичное представление');
+                    const step5 = createStepElement('Шаг 5: Преобразование порядка в двоичное представление');
                     exponentOutputElement.appendChild(step5);
                     // Ожидание некоторого времени перед выполнением преобразования экспоненты
                     setTimeout(() => {

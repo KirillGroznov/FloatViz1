@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
             adjustedMantissa = ' 0.' + '0'.repeat(-adjustedExponent) + mantissaBinaryString;
             adjustedMantissa = adjustedMantissa.replace(/^0+|0+$/g, ''); // Удаление лишних нулей справа
         }
-        const step4 = `Шаг 4: Двигаем запятую в мантиссе (на экспоненту, полученную во втором шаге): ${adjustedMantissa} * 2^${adjustedExponent}`;
+        const step4 = `Шаг 4: Двигаем запятую в мантиссе (на порядок, полученную во втором шаге): ${adjustedMantissa} * 2^${adjustedExponent}`;
 
         // Шаг 5: Переводим мантиссу в десятичное число
         const integerPart = parseInt(adjustedMantissa.split('.')[0], 2); // Перевод целой части мантиссы в десятичное число

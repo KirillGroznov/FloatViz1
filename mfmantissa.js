@@ -50,9 +50,9 @@ function animateMFMantissaChange(inputValue) {
 
             // Пояснение про направление сдвига
             if (exponent >= 0) {
-                step2.innerHTML += `<br>Так как экспонента положительная (${exponent}), десятичная точка сдвигается влево.`;
+                step2.innerHTML += `<br>Так как порядок положительный (${exponent}), десятичная точка сдвигается влево.`;
             } else {
-                step2.innerHTML += `<br>Так как экспонента отрицательная (${exponent}), десятичная точка сдвигается вправо.`;
+                step2.innerHTML += `<br>Так как порядок отрицательный (${exponent}), десятичная точка сдвигается вправо.`;
             }
 
             const step3 = createStepElement3('Шаг 3: Определение мантиссы');

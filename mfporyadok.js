@@ -41,31 +41,31 @@ function animateMFExponentChange(inputValue) {
             const shiftedComma = exponent >= 0 ? '0' + normalizedBinary.substring(-1, 0) + ',' + normalizedBinary.substring(0) :
                 normalizedBinary.substring(0, 1) + '.' + normalizedBinary.substring(1 - exponent);
             const normalizedNumber = `${shiftedComma} * 16^(сдвинуто число на ${Math.abs(exponent)} разрядов)`;
-            step2.innerHTML += `<br>Для определения мантиссы и порядка производится перемещение запятой в шестнадцатеричном числе влево или вправо таким образом, чтобы она установилась перед старшей значащей цифрой. Это делается для того, чтобы получить нормализованную форму числа, где n является экспонентой.<br>Нормализация числа: ${normalizedNumber}`;
+            step2.innerHTML += `<br>Для определения мантиссы и порядка производится перемещение запятой в шестнадцатеричном числе влево или вправо таким образом, чтобы она установилась перед старшей значащей цифрой. Это делается для того, чтобы получить нормализованную форму числа, где n является порядком.<br>Нормализация числа: ${normalizedNumber}`;
 
             // Пояснение про направление сдвига
             if (exponent >= 0) {
-                step2.innerHTML += `<br>Так как экспонента положительная (${exponent}), десятичная точка сдвигается влево.`;
+                step2.innerHTML += `<br>Так как порядок положительный (${exponent}), десятичная точка сдвигается влево.`;
             } else {
-                step2.innerHTML += `<br>Так как экспонента отрицательная (${exponent}), десятичная точка сдвигается вправо.`;
+                step2.innerHTML += `<br>Так как порядок отрицательный (${exponent}), десятичная точка сдвигается вправо.`;
             }
 
             // Шаг 3: Вычисление экспоненты
-            const step3 = createStepElement('Шаг 3: Вычисление экспоненты');
+            const step3 = createStepElement('Шаг 3: Вычисление порядка');
             exponentOutputElement.appendChild(step3);
             setTimeout(() => {
                 let exponent = calculateMFExponent(Math.abs(inputValue)) + 1; // Добавляем 1 к экспоненте
                 step3.innerHTML += `<br>Вычисление экспоненты: n = ${exponent}`;
 
                 // Шаг 4: Смещение экспоненты
-                const step4 = createStepElement('Шаг 4: Смещение экспоненты');
+                const step4 = createStepElement('Шаг 4: Смещение порядка');
                 exponentOutputElement.appendChild(step4);
                 setTimeout(() => {
                     let shiftedExponent = exponent + 64; // Для MF смещение +64
-                    step4.innerHTML += `<br>Величина смещения в формате MF равна 64<br>Смещение экспоненты: ${exponent} + 64 = ${shiftedExponent}`;
+                    step4.innerHTML += `<br>Величина смещения в формате MF равна 64<br>Смещение порядка: ${exponent} + 64 = ${shiftedExponent}`;
 
                     // Шаг 5: Преобразование экспоненты в двоичное представление
-                    const step5 = createStepElement('Шаг 5: Преобразование экспоненты в двоичное представление');
+                    const step5 = createStepElement('Шаг 5: Преобразование порядка в двоичное представление');
                     exponentOutputElement.appendChild(step5);
                     setTimeout(() => {
                         const binarySteps = convertToBinarySteps(shiftedExponent);
